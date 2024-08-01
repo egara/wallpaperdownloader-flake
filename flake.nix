@@ -8,6 +8,7 @@
   outputs = { self, nixpkgs }:
   let 
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    version = "4.4.2";
   in
   {  
     packages.x86_64-linux = {      
@@ -32,27 +33,44 @@
       # In order to obtain this hash it is only necessary to comment the line
       # and execute nix build. This command will fail and it will provide the correct
       # hash to use.
+      # Sources: 
+      # https://ryantm.github.io/nixpkgs/languages-frameworks/maven/
+      # https://ryantm.github.io/nixpkgs/languages-frameworks/java/#sec-language-java
       default = pkgs.maven.buildMavenPackage {
         
         pname = "wallpaperdownloader";
-        version = "4.4.2";
+        inherit version;
 
-        src = ./.;
+        src = pkgs.fetchurl {
+          url = "https://bitbucket.org/eloy_garcia_pca/wallpaperdownloader/get/v${version}.tar.gz";
+          hash = "sha256-ArzG8UlhsHH/St0xsa2YbFfr2qqxt8n067mRPABM2gI=";
+        };
+
+        # Comment above and uncomment this if it is necessary to do some
+        # tests and the source code of WallpaperDownloader is here ./
+        # src = ./.;
 
         mvnHash = "sha256-z2jrl5oTkVzYzcBIPZzpdrXQ4L0Gn6aGvLX02YK6bBs=";
 
-        buildInputs = [ pkgs.jdk ];
+        buildInputs = [ 
+          pkgs.jdk 
+        ];
 
+        # makeWrapper is a Nix tool specific developed to create scripts
+        # (wrappers) to execute Java applications (and maybe anothe kind
+        # of applications)
+        nativeBuildInputs = [ pkgs.makeWrapper ];
 
         installPhase = ''
-          mkdir -p $out/lib
-          cp target/$pname.jar $out/lib/$pname.jar
+          mkdir -p $out/bin $out/share/java/$pname
+          install -Dm644 target/$pname.jar $out/share/java/$pname
+
+          makeWrapper ${pkgs.jre}/bin/java $out/bin/$pname \
+          --add-flags "-Xmx256m -Xms128m -jar $out/share/java/$pname/$pname.jar"
         '';
 
-        #__noChroot = true;
-
         meta = with pkgs.lib; {
-          description = "My Java Application";
+          description = "WallpaperDownloader. Download, manage and change automatically your favorite wallpapers from the Internet";
           license = licenses.mit;
           maintainers = [ "maintainers.yourGitHubHandle" ];
         };

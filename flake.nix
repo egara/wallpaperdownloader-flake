@@ -2,7 +2,7 @@
   description = "WallpaperDownloader. A Java based application packaged using a Nix flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.05";
   };
 
   outputs = { self, nixpkgs }:

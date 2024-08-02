@@ -62,8 +62,15 @@
         nativeBuildInputs = [ pkgs.makeWrapper ];
 
         installPhase = ''
+          # Preparing final structure
           mkdir -p $out/bin $out/share/java/$pname
+
+          # Copying the complete jar
           install -Dm644 target/$pname.jar $out/share/java/$pname
+
+          # Installing .desktop file and icon
+          install -Dm444 packaging/$pname.desktop -t $out/share/applications
+          install -Dm444 packaging/$pname.svg -t $out/share/icons/hicolor/scalable/apps
 
           makeWrapper ${pkgs.jre}/bin/java $out/bin/$pname \
           --add-flags "-Xmx256m -Xms128m -jar $out/share/java/$pname/$pname.jar"

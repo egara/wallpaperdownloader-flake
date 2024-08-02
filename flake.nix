@@ -50,7 +50,8 @@
         # tests and the source code of WallpaperDownloader is here ./
         # src = ./.;
 
-        mvnHash = "sha256-z2jrl5oTkVzYzcBIPZzpdrXQ4L0Gn6aGvLX02YK6bBs=";
+        # Old hash ---> mvnHash = "sha256-z2jrl5oTkVzYzcBIPZzpdrXQ4L0Gn6aGvLX02YK6bBs=";
+        mvnHash = "sha256-qj/NTVeprYl/d2xt2qKG1bP7FZvm0kz/GveapJzuX8s=";
 
         buildInputs = [ 
           pkgs.jdk 

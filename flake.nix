@@ -8,7 +8,7 @@
   outputs = { self, nixpkgs }:
   let 
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    version = "4.4.2";
+    version = "4.4.3";
   in
   {  
     packages.x86_64-linux = {      
@@ -43,7 +43,7 @@
 
         src = pkgs.fetchurl {
           url = "https://bitbucket.org/eloy_garcia_pca/wallpaperdownloader/get/v${version}.tar.gz";
-          hash = "sha256-ArzG8UlhsHH/St0xsa2YbFfr2qqxt8n067mRPABM2gI=";
+          hash = "sha256-Z0w3gi2RuwDCaMMixJAmhVQFYfDyEXqGeyMgWQ3jkKw=";
         };
 
         # Comment above and uncomment this if it is necessary to do some
